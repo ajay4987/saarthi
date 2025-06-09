@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAARTHI - Financial Profile Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .app-header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #3b82f6;
+            background: #dbeafe;
+            padding: 0.75rem;
+            border-radius: 12px;
+        }
+
+        .logo-section h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-section p {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-count {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background: #f9fafb;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* Tab Navigation */
+        .tab-navigation {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0;
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: none;
+            color: #64748b;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: #3b82f6;
+        }
+
+        .tab-btn.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 1.5rem 2rem;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 400px;
+            margin-bottom: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 2rem;
+            min-height: calc(100vh - 300px);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* People Grid */
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .person-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .person-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .person-card.high-risk {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .person-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .person-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .person-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            font-size: 1.25rem;
+        }
+
+        .person-avatar.high-risk {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .person-details h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .person-details p {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .person-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: #e2e8f0;
+            color: #374151;
+        }
+
+        .icon-btn.delete {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .icon-btn.delete:hover {
+            background: #fecaca;
+        }
+
+        .person-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .label {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-item .value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .person-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .risk-alert {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #dc2626;
+            font-size: 0.875rem;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .data-table tr.high-risk {
+            background: #fef2f2;
+        }
+
+        /* CIBIL Grid */
+        .cibil-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .cibil-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .cibil-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .cibil-image:hover {
+            opacity: 0.8;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+            padding: 0.25rem;
+        }
+
+        .close-btn:hover {
+            color: #374151;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .form-group input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .loan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .loan-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .loan-item label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .loan-item input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .file-upload {
+            border: 2px dashed #d1d5db;
+            border-radius: 6px;
+            padding: 2rem;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        .file-upload:hover {
+            border-color: #3b82f6;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #3b82f6;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .file-upload-label:hover {
+            background: #2563eb;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+        }
+
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #475569;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background: #1e293b;
+            color: white;
+            padding: 0.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .status-online {
+            color: #10b981;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .tab-navigation {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .people-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .loan-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+        }
+
+        /* Confirm Dialog */
+        .confirm-dialog {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirm-dialog.active {
+            display: flex;
+        }
+
+        .confirm-content {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .confirm-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .confirm-message {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-chart-line logo-icon"></i>
+                    <div>
+                        <h1>SAARTHI</h1>
+                        <p>Soldiers Advisory & Resource Team For Handling Investments</p>
+                        <span class="user-count">(<span id="userCount">0</span> total users • Offline Ready)</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="addPersonBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Person
+                    </button>
+                    <button id="exportBtn" class="btn btn-outline">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button id="importBtn" class="btn btn-outline">
+                        <i class="fas fa-upload"></i> Import
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tab-navigation">
+            <button class="tab-btn active" data-tab="directory">
+                <i class="fas fa-users"></i> Directory (<span id="directoryCount">0</span>)
+            </button>
+            <button class="tab-btn" data-tab="loans">
+                <i class="fas fa-credit-card"></i> Loans (<span id="loansCount">0</span>)
+            </button>
+            <button class="tab-btn" data-tab="investments">
+                <i class="fas fa-chart-line"></i> Investments (<span id="investmentsCount">0</span>)
+            </button>
+            <button class="tab-btn" data-tab="cibil">
+                <i class="fas fa-file-upload"></i> CIBIL Docs (<span id="cibilCount">0</span>)
+            </button>
+        </nav>
+
+        <!-- Search Bar -->
+        <div class="search-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search by name, state, or number..." />
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <main class="content-area">
+            <!-- Directory Tab -->
+            <div id="directory" class="tab-content active">
+                <div id="peopleGrid" class="people-grid">
+                    <!-- People cards will be dynamically added here -->
+                </div>
+                <div id="emptyState" class="empty-state">
+                    <i class="fas fa-users empty-icon"></i>
+                    <h3>No profiles added yet</h3>
+                    <p>Click the "Add Person" button to get started</p>
+                </div>
+            </div>
+
+            <!-- Loans Tab -->
+            <div id="loans" class="tab-content">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>State</th>
+                                <th>Salary</th>
+                                <th>Total Loans</th>
+                                <th>Total EMIs</th>
+                                <th>Loan Types</th>
+                                <th>Risk</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loansTableBody">
+                            <!-- Loan data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="loansEmptyState" class="empty-state">
+                    <i class="fas fa-credit-card empty-icon"></i>
+                    <h3>No loan data found</h3>
+                    <p>Add profiles with loans to see them here</p>
+                </div>
+            </div>
+
+            <!-- Investments Tab -->
+            <div id="investments" class="tab-content">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>State</th>
+                                <th>Salary</th>
+                                <th>Total Investments</th>
+                                <th>Stock Market</th>
+                                <th>Mutual Funds</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="investmentsTableBody">
+                            <!-- Investment data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="investmentsEmptyState" class="empty-state">
+                    <i class="fas fa-chart-line empty-icon"></i>
+                    <h3>No investment data found</h3>
+                    <p>Add profiles with investments to see them here</p>
+                </div>
+            </div>
+
+            <!-- CIBIL Tab -->
+            <div id="cibil" class="tab-content">
+                <div id="cibilGrid" class="cibil-grid">
+                    <!-- CIBIL documents will be displayed here -->
+                </div>
+                <div id="cibilEmptyState" class="empty-state">
+                    <i class="fas fa-file-upload empty-icon"></i>
+                    <h3>No CIBIL documents found</h3>
+                    <p>Add profiles with CIBIL score documents to see them here</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Person Modal -->
+    <div id="personModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Financial Profile</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="personForm">
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <h3>Basic Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="personNo">No *</label>
+                                <input type="number" id="personNo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="personName">Name *</label>
+                                <input type="text" id="personName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="personState">State *</label>
+                                <input type="text" id="personState" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="personSalary">Salary</label>
+                                <input type="number" id="personSalary">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loan Information -->
+                    <div class="form-section">
+                        <h3>Loan Information</h3>
+                        <div class="loan-grid">
+                            <div class="loan-item">
+                                <label>Vehicle Loan</label>
+                                <input type="number" id="vehicleLoan" placeholder="Loan Amount">
+                                <input type="number" id="vehicleEMI" placeholder="EMI">
+                            </div>
+                            <div class="loan-item">
+                                <label>Home Loan</label>
+                                <input type="number" id="homeLoan" placeholder="Loan Amount">
+                                <input type="number" id="homeEMI" placeholder="EMI">
+                            </div>
+                            <div class="loan-item">
+                                <label>Personal Loan</label>
+                                <input type="number" id="personalLoan" placeholder="Loan Amount">
+                                <input type="number" id="personalLoanEMI" placeholder="EMI">
+                            </div>
+                            <div class="loan-item">
+                                <label>Education Loan</label>
+                                <input type="number" id="educationLoan" placeholder="Loan Amount">
+                                <input type="number" id="educationLoanEMI" placeholder="EMI">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Investment Information -->
+                    <div class="form-section">
+                        <h3>Investment Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="investmentStockMarket">Stock Market</label>
+                                <input type="number" id="investmentStockMarket">
+                            </div>
+                            <div class="form-group">
+                                <label for="investmentMutualFund">Mutual Fund</label>
+                                <input type="number" id="investmentMutualFund">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="saving">Savings</label>
+                                <input type="number" id="saving">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CIBIL Score Upload -->
+                    <div class="form-section">
+                        <h3>CIBIL Score Document</h3>
+                        <div class="file-upload">
+                            <input type="file" id="cibilScoreImage" accept="image/*">
+                            <label for="cibilScoreImage" class="file-upload-label">
+                                <i class="fas fa-upload"></i> Choose CIBIL Score Image
+                            </label>
+                            <div id="imagePreview" class="image-preview"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancelBtn" class="btn btn-outline">Cancel</button>
+                        <button type="submit" id="saveBtn" class="btn btn-primary">Save Person</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmDialog" class="confirm-dialog">
+        <div class="confirm-content">
+            <div class="confirm-title">Confirm Delete</div>
+            <div class="confirm-message">Are you sure you want to delete this profile? This action cannot be undone.</div>
+            <div class="confirm-actions">
+                <button id="cancelDelete" class="btn btn-outline">Cancel</button>
+                <button id="confirmDelete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="statusText">Ready</span>
+        </div>
+        <div class="status-right">
+            <span id="connectionStatus">
+                <i class="fas fa-circle status-online"></i> Offline Ready
+            </span>
+        </div>
+    </div>
+
+    <script>
+        // SAARTHI Desktop Application
+        class SaarthiApp {
+            constructor() {
+                this.people = []
+                this.currentTab = "directory"
+                this.searchTerm = ""
+                this.editingPerson = null
+                this.currentImageData = null
+                this.personToDelete = null
+
+                this.init()
+            }
+
+            init() {
+                this.loadData()
+                this.setupEventListeners()
+                this.renderCurrentTab()
+                this.updateCounts()
+            }
+
+            // Data Management
+            loadData() {
+                const saved = localStorage.getItem("saarthi-data")
+                if (saved) {
+                    this.people = JSON.parse(saved)
+                } else {
+                    // Generate sample data for demo
+                    this.generateSampleData()
+                }
+            }
+
+            saveData() {
+                localStorage.setItem("saarthi-data", JSON.stringify(this.people))
+                this.updateStatus("Data saved successfully")
+            }
+
+            generateSampleData() {
+                const states = ["Maharashtra", "Karnataka", "Tamil Nadu", "Gujarat", "Rajasthan"]
+                const names = ["Raj Kumar", "Priya Sharma", "Amit Singh", "Sunita Patel", "Vikram Reddy"]
+
+                for (let i = 1; i <= 5; i++) {
+                    this.people.push({
+                        id: Date.now() + i,
+                        no: i,
+                        name: `${names[i - 1]}`,
+                        state: states[i - 1],
+                        salary: Math.floor(Math.random() * 80000) + 20000,
+                        vehicleLoan: Math.random() > 0.6 ? Math.floor(Math.random() * 500000) : 0,
+                        vehicleEMI: Math.random() > 0.6 ? Math.floor(Math.random() * 15000) : 0,
+                        homeLoan: Math.random() > 0.7 ? Math.floor(Math.random() * 3000000) : 0,
+                        homeEMI: Math.random() > 0.7 ? Math.floor(Math.random() * 30000) : 0,
+                        personalLoan: Math.random() > 0.5 ? Math.floor(Math.random() * 200000) : 0,
+                        personalLoanEMI: Math.random() > 0.5 ? Math.floor(Math.random() * 8000) : 0,
+                        educationLoan: Math.random() > 0.8 ? Math.floor(Math.random() * 300000) : 0,
+                        educationLoanEMI: Math.random() > 0.8 ? Math.floor(Math.random() * 5000) : 0,
+                        investmentStockMarket: Math.floor(Math.random() * 50000),
+                        investmentMutualFund: Math.floor(Math.random() * 30000),
+                        saving: Math.floor(Math.random() * 20000) + 5000,
+                        cibilScoreImage: i === 3 ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAO2UlEQVR4Xu3dW49dVRXG8TFnz5k5Z+acPdOZaafTmU5bSqGUQrkUuRRBQBRFMdGIJhgTjYmJJpqYGB80fgCND34AH3zwAxijRuMFuYkawBgwAQUjpQVKaW3pZTrTy8w5M+fO2W7jg5K0w95r/9f6r7XX/vfTethrrf9vrX/2PnvvqigWBBBAIBCBKpA6KEMEEEBAECweAgQQCEaAwArmKIoRAQQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiGUAAgWAECKzgjKIgEUQILJ4BBBAIRoDACs4oChJBgMDiG" : null,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    })
+                }
+                this.saveData()
+            }
+
+            // Event Listeners
+            setupEventListeners() {
+                // Tab navigation
+                document.querySelectorAll(".tab-btn").forEach((btn) => {
+                    btn.addEventListener("click", (e) => {
+                        this.switchTab(e.target.dataset.tab)
+                    })
+                })
+
+                // Search
+                document.getElementById("searchInput").addEventListener("input", (e) => {
+                    this.searchTerm = e.target.value
+                    this.renderCurrentTab()
+                })
+
+                // Modal controls
+                document.getElementById("addPersonBtn").addEventListener("click", () => {
+                    this.openPersonModal()
+                })
+
+                document.getElementById("closeModal").addEventListener("click", () => {
+                    this.closePersonModal()
+                })
+
+                document.getElementById("cancelBtn").addEventListener("click", () => {
+                    this.closePersonModal()
+                })
+
+                // Form submission
+                document.getElementById("personForm").addEventListener("submit", (e) => {
+                    e.preventDefault()
+                    this.savePerson()
+                })
+
+                // File upload
+                document.getElementById("cibilScoreImage").addEventListener("change", (e) => {
+                    this.handleImageUpload(e)
+                })
+
+                // Export/Import buttons
+                document.getElementById("exportBtn").addEventListener("click", () => {
+                    this.exportData()
+                })
+
+                document.getElementById("importBtn").addEventListener("click", () => {
+                    this.importData()
+                })
+
+                // Close modal on outside click
+                document.getElementById("personModal").addEventListener("click", (e) => {
+                    if (e.target.id === "personModal") {
+                        this.closePersonModal()
+                    }
+                })
+
+                // Confirm dialog
+                document.getElementById("cancelDelete").addEventListener("click", () => {
+                    this.closeConfirmDialog()
+                })
+
+                document.getElementById("confirmDelete").addEventListener("click", () => {
+                    this.deleteConfirmed()
+                })
+
+                document.getElementById("confirmDialog").addEventListener("click", (e) => {
+                    if (e.target.id === "confirmDialog") {
+                        this.closeConfirmDialog()
+                    }
+                })
+            }
+
+            // Tab Management
+            switchTab(tabName) {
+                // Update tab buttons
+                document.querySelectorAll(".tab-btn").forEach((btn) => {
+                    btn.classList.remove("active")
+                })
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add("active")
+
+                // Update tab content
+                document.querySelectorAll(".tab-content").forEach((content) => {
+                    content.classList.remove("active")
+                })
+                document.getElementById(tabName).classList.add("active")
+
+                this.currentTab = tabName
+                this.renderCurrentTab()
+            }
+
+            renderCurrentTab() {
+                switch (this.currentTab) {
+                    case "directory":
+                        this.renderDirectory()
+                        break
+                    case "loans":
+                        this.renderLoans()
+                        break
+                    case "investments":
+                        this.renderInvestments()
+                        break
+                    case "cibil":
+                        this.renderCibil()
+                        break
+                }
+            }
+
+            // Directory Rendering
+            renderDirectory() {
+                const filteredPeople = this.getFilteredPeople()
+                const grid = document.getElementById("peopleGrid")
+                const emptyState = document.getElementById("emptyState")
+
+                if (filteredPeople.length === 0) {
+                    grid.style.display = "none"
+                    emptyState.style.display = "block"
+                    return
+                }
+
+                grid.style.display = "grid"
+                emptyState.style.display = "none"
+
+                grid.innerHTML = filteredPeople
+                    .map((person) => {
+                        const riskFactors = this.calculateRiskFactors(person)
+                        const isHighRisk = riskFactors.hasMoreThan3Loans || riskFactors.spendingMoreThanSalary
+
+                        return `
+                        <div class="person-card ${isHighRisk ? "high-risk" : ""}">
+                            <div class="person-header">
+                                <div class="person-info">
+                                    <div class="person-avatar ${isHighRisk ? "high-risk" : ""}">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="person-details">
+                                        <h3>${person.name}</h3>
+                                        <p>#${person.no} • ${person.state}</p>
+                                    </div>
+                                </div>
+                                <div class="person-actions">
+                                    <button class="icon-btn" onclick="app.editPerson(${person.id})" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="icon-btn delete" onclick="app.deletePerson(${person.id})" title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    ${isHighRisk ? '<i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>' : ""}
+                                </div>
+                            </div>
+
+                            ${
+                                isHighRisk
+                                    ? `
+                                <div class="risk-alert">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>
+                                        ${riskFactors.hasMoreThan3Loans ? "Has more than 3 loans. " : ""}
+                                        ${riskFactors.spendingMoreThanSalary ? "EMIs exceed salary." : ""}
+                                    </span>
+                                </div>
+                            `
+                                    : ""
+                            }
+
+                            <div class="person-stats">
+                                <div class="stat-item">
+                                    <div class="label">Salary</div>
+                                    <div class="value">₹${person.salary.toLocaleString()}</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="label">Total EMIs</div>
+                                    <div class="value">₹${riskFactors.totalEMIs.toLocaleString()}</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="label">Active Loans</div>
+                                    <div class="value">${riskFactors.totalLoans}</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="label">Savings</div>
+                                    <div class="value">₹${person.saving.toLocaleString()}</div>
+                                </div>
+                            </div>
+
+                            <div class="person-badges">
+                                ${person.vehicleLoan > 0 ? '<span class="badge badge-secondary">Vehicle</span>' : ""}
+                                ${person.homeLoan > 0 ? '<span class="badge badge-secondary">Home</span>' : ""}
+                                ${person.personalLoan > 0 ? '<span class="badge badge-secondary">Personal</span>' : ""}
+                                ${person.educationLoan > 0 ? '<span class="badge badge-secondary">Education</span>' : ""}
+                                ${riskFactors.totalInvestment > 0 ? '<span class="badge badge-success"><i class="fas fa-chart-line"></i> Investments</span>' : ""}
+                                ${person.cibilScoreImage ? '<span class="badge badge-secondary"><i class="fas fa-credit-card"></i> CIBIL</span>' : ""}
+                            </div>
+                        </div>
+                    `
+                    })
+                    .join("")
+            }
+
+            // Loans Rendering
+            renderLoans() {
+                const loanData = this.people.filter((person) => {
+                    const riskFactors = this.calculateRiskFactors(person)
+                    return riskFactors.totalLoans > 0
+                })
+
+                const filteredData = this.getFilteredData(loanData)
+                const tableBody = document.getElementById("loansTableBody")
+                const tableContainer = document.querySelector("#loans .table-container")
+                const emptyState = document.getElementById("loansEmptyState")
+
+                if (filteredData.length === 0) {
+                    tableContainer.style.display = "none"
+                    emptyState.style.display = "block"
+                    return
+                }
+
+                tableContainer.style.display = "block"
+                emptyState.style.display = "none"
+
+                tableBody.innerHTML = filteredData
+                    .map((person) => {
+                        const riskFactors = this.calculateRiskFactors(person)
+                        const isHighRisk = riskFactors.hasMoreThan3Loans || riskFactors.spendingMoreThanSalary
+
+                        return `
+                        <tr class="${isHighRisk ? "high-risk" : ""}">
+                            <td><strong>${person.name}</strong></td>
+                            <td>${person.state}</td>
+                            <td>₹${person.salary.toLocaleString()}</td>
+                            <td>${riskFactors.totalLoans}</td>
+                            <td>₹${riskFactors.totalEMIs.toLocaleString()}</td>
+                            <td>
+                                <div class="person-badges">
+                                    ${person.vehicleLoan > 0 ? '<span class="badge badge-secondary">Vehicle</span>' : ""}
+                                    ${person.homeLoan > 0 ? '<span class="badge badge-secondary">Home</span>' : ""}
+                                    ${person.personalLoan > 0 ? '<span class="badge badge-secondary">Personal</span>' : ""}
+                                    ${person.educationLoan > 0 ? '<span class="badge badge-secondary">Education</span>' : ""}
+                                </div>
+                            </td>
+                            <td>
+                                ${isHighRisk ? '<span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> High Risk</span>' : ""}
+                            </td>
+                            <td>
+                                <button class="icon-btn" onclick="app.editPerson(${person.id})" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-btn delete" onclick="app.deletePerson(${person.id})" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `
+                    })
+                    .join("")
+            }
+
+            // Investments Rendering
+            renderInvestments() {
+                const investmentData = this.people.filter((person) => {
+                    return person.investmentStockMarket > 0 || person.investmentMutualFund > 0
+                })
+
+                const filteredData = this.getFilteredData(investmentData)
+                const tableBody = document.getElementById("investmentsTableBody")
+                const tableContainer = document.querySelector("#investments .table-container")
+                const emptyState = document.getElementById("investmentsEmptyState")
+
+                if (filteredData.length === 0) {
+                    tableContainer.style.display = "none"
+                    emptyState.style.display = "block"
+                    return
+                }
+
+                tableContainer.style.display = "block"
+                emptyState.style.display = "none"
+
+                tableBody.innerHTML = filteredData
+                    .map((person) => {
+                        const totalInvestments = person.investmentStockMarket + person.investmentMutualFund
+
+                        return `
+                        <tr>
+                            <td><strong>${person.name}</strong></td>
+                            <td>${person.state}</td>
+                            <td>₹${person.salary.toLocaleString()}</td>
+                            <td class="text-green-600"><strong>₹${totalInvestments.toLocaleString()}</strong></td>
+                            <td>${person.investmentStockMarket > 0 ? `₹${person.investmentStockMarket.toLocaleString()}` : "-"}</td>
+                            <td>${person.investmentMutualFund > 0 ? `₹${person.investmentMutualFund.toLocaleString()}` : "-"}</td>
+                            <td>
+                                <button class="icon-btn" onclick="app.editPerson(${person.id})" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-btn delete" onclick="app.deletePerson(${person.id})" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `
+                    })
+                    .join("")
+            }
+
+            // CIBIL Rendering
+            renderCibil() {
+                const cibilData = this.people.filter((person) => person.cibilScoreImage)
+                const filteredData = this.getFilteredData(cibilData)
+                const grid = document.getElementById("cibilGrid")
+                const emptyState = document.getElementById("cibilEmptyState")
+
+                if (filteredData.length === 0) {
+                    grid.style.display = "none"
+                    emptyState.style.display = "block"
+                    return
+                }
+
+                grid.style.display = "grid"
+                emptyState.style.display = "none"
+
+                grid.innerHTML = filteredData
+                    .map((person) => `
+                        <div class="cibil-card">
+                            <div class="person-header">
+                                <div class="person-info">
+                                    <div class="person-avatar">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <div class="person-details">
+                                        <h3>${person.name}</h3>
+                                        <p>#${person.no} • ${person.state}</p>
+                                    </div>
+                                </div>
+                                <div class="person-actions">
+                                    <button class="icon-btn" onclick="app.editPerson(${person.id})" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="icon-btn delete" onclick="app.deletePerson(${person.id})" title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="person-stats">
+                                <div class="stat-item">
+                                    <div class="label">Salary</div>
+                                    <div class="value">₹${person.salary.toLocaleString()}</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="label">Upload Date</div>
+                                    <div class="value">${new Date(person.updatedAt).toLocaleDateString()}</div>
+                                </div>
+                            </div>
+
+                            ${
+                                person.cibilScoreImage
+                                    ? `
+                                    <img src="${person.cibilScoreImage}" alt="CIBIL Score for ${person.name}" 
+                                         class="cibil-image" onclick="app.viewImage('${person.cibilScoreImage}', '${person.name}')">
+                                    <p style="text-align: center; font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
+                                        Click to view full size
+                                    </p>
+                                `
+                                    : ""
+                            }
+
+                            <div class="person-badges">
+                                <span class="badge badge-secondary">
+                                    <i class="fas fa-upload"></i> Document Available
+                                </span>
+                            </div>
+                        </div>
+                    `)
+                    .join("")
+            }
+
+            // Utility Functions
+            calculateRiskFactors(person) {
+                const loans = [
+                    person.vehicleLoan,
+                    person.homeLoan,
+                    person.personalLoan,
+                    person.educationLoan,
+                ].filter((loan) => loan > 0)
+
+                const totalEMIs =
+                    (person.vehicleEMI || 0) +
+                    (person.homeEMI || 0) +
+                    (person.personalLoanEMI || 0) +
+                    (person.educationLoanEMI || 0)
+
+                const totalInvestment = 
+                    (person.investmentStockMarket || 0) + 
+                    (person.investmentMutualFund || 0)
+
+                return {
+                    hasMoreThan3Loans: loans.length > 3,
+                    spendingMoreThanSalary: totalEMIs > person.salary,
+                    totalLoans: loans.length,
+                    totalEMIs,
+                    totalInvestment,
+                }
+            }
+
+            getFilteredPeople() {
+                return this.people.filter(
+                    (person) =>
+                        person.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                        person.state.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                        person.no.toString().includes(this.searchTerm),
+                )
+            }
+
+            getFilteredData(data) {
+                return data.filter(
+                    (person) =>
+                        person.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                        person.state.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                        person.no.toString().includes(this.searchTerm),
+                )
+            }
+
+            // Modal Management
+            openPersonModal(person = null) {
+                this.editingPerson = person
+                const modal = document.getElementById("personModal")
+                const title = document.getElementById("modalTitle")
+                const saveBtn = document.getElementById("saveBtn")
+
+                if (person) {
+                    title.textContent = "Edit Financial Profile"
+                    saveBtn.textContent = "Update Person"
+                    this.populateForm(person)
+                } else {
+                    title.textContent = "Add New Financial Profile"
+                    saveBtn.textContent = "Save Person"
+                    this.resetForm()
+                }
+
+                modal.classList.add("active")
+            }
+
+            closePersonModal() {
+                document.getElementById("personModal").classList.remove("active")
+                this.editingPerson = null
+                this.resetForm()
+            }
+
+            populateForm(person) {
+                document.getElementById("personNo").value = person.no
+                document.getElementById("personName").value = person.name
+                document.getElementById("personState").value = person.state
+                document.getElementById("personSalary").value = person.salary
+                document.getElementById("vehicleLoan").value = person.vehicleLoan || ""
+                document.getElementById("vehicleEMI").value = person.vehicleEMI || ""
+                document.getElementById("homeLoan").value = person.homeLoan || ""
+                document.getElementById("homeEMI").value = person.homeEMI || ""
+                document.getElementById("personalLoan").value = person.personalLoan || ""
+                document.getElementById("personalLoanEMI").value = person.personalLoanEMI || ""
+                document.getElementById("educationLoan").value = person.educationLoan || ""
+                document.getElementById("educationLoanEMI").value = person.educationLoanEMI || ""
+                document.getElementById("investmentStockMarket").value = person.investmentStockMarket || ""
+                document.getElementById("investmentMutualFund").value = person.investmentMutualFund || ""
+                document.getElementById("saving").value = person.saving || ""
+
+                this.currentImageData = person.cibilScoreImage
+
+                if (person.cibilScoreImage) {
+                    document.getElementById("imagePreview").innerHTML =
+                        `<img src="${person.cibilScoreImage}" alt="CIBIL Score">`
+                }
+            }
+
+            resetForm() {
+                document.getElementById("personForm").reset()
+                document.getElementById("imagePreview").innerHTML = ""
+                document.getElementById("personNo").value = this.people.length + 1
+                this.currentImageData = null
+            }
+
+            savePerson() {
+                const formData = this.getFormData()
+
+                if (!formData.name || !formData.state) {
+                    alert("Please fill in required fields (Name and State)")
+                    return
+                }
+
+                if (this.editingPerson) {
+                    // Update existing person
+                    const index = this.people.findIndex((p) => p.id === this.editingPerson.id)
+                    if (index !== -1) {
+                        this.people[index] = {
+                            ...this.editingPerson,
+                            ...formData,
+                            updatedAt: new Date(),
+                        }
+                    }
+                } else {
+                    // Add new person
+                    const newPerson = {
+                        id: Date.now(),
+                        ...formData,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    }
+                    this.people.push(newPerson)
+                }
+
+                this.saveData()
+                this.closePersonModal()
+                this.renderCurrentTab()
+                this.updateCounts()
+                this.updateStatus(this.editingPerson ? "Profile updated successfully" : "Profile added successfully")
+            }
+
+            getFormData() {
+                return {
+                    no: parseInt(document.getElementById("personNo").value) || 0,
+                    name: document.getElementById("personName").value.trim(),
+                    state: document.getElementById("personState").value.trim(),
+                    salary: parseFloat(document.getElementById("personSalary").value) || 0,
+                    vehicleLoan: parseFloat(document.getElementById("vehicleLoan").value) || 0,
+                    vehicleEMI: parseFloat(document.getElementById("vehicleEMI").value) || 0,
+                    homeLoan: parseFloat(document.getElementById("homeLoan").value) || 0,
+                    homeEMI: parseFloat(document.getElementById("homeEMI").value) || 0,
+                    personalLoan: parseFloat(document.getElementById("personalLoan").value) || 0,
+                    personalLoanEMI: parseFloat(document.getElementById("personalLoanEMI").value) || 0,
+                    educationLoan: parseFloat(document.getElementById("educationLoan").value) || 0,
+                    educationLoanEMI: parseFloat(document.getElementById("educationLoanEMI").value) || 0,
+                    investmentStockMarket: parseFloat(document.getElementById("investmentStockMarket").value) || 0,
+                    investmentMutualFund: parseFloat(document.getElementById("investmentMutualFund").value) || 0,
+                    saving: parseFloat(document.getElementById("saving").value) || 0,
+                    cibilScoreImage: this.currentImageData,
+                }
+            }
+
+            editPerson(id) {
+                const person = this.people.find((p) => p.id === id)
+                if (person) {
+                    this.openPersonModal(person)
+                }
+            }
+
+            deletePerson(id) {
+                const person = this.people.find((p) => p.id === id)
+                if (person) {
+                    this.personToDelete = person
+                    this.openConfirmDialog()
+                }
+            }
+
+            openConfirmDialog() {
+                document.getElementById("confirmDialog").classList.add("active")
+            }
+
+            closeConfirmDialog() {
+                document.getElementById("confirmDialog").classList.remove("active")
+                this.personToDelete = null
+            }
+
+            deleteConfirmed() {
+                if (this.personToDelete) {
+                    this.people = this.people.filter((p) => p.id !== this.personToDelete.id)
+                    this.saveData()
+                    this.renderCurrentTab()
+                    this.updateCounts()
+                    this.updateStatus("Profile deleted successfully")
+                }
+                this.closeConfirmDialog()
+            }
+
+            // Image Handling
+            handleImageUpload(event) {
+                const file = event.target.files[0]
+                if (file) {
+                    const reader = new FileReader()
+                    reader.onload = (e) => {
+                        this.currentImageData = e.target.result
+                        document.getElementById("imagePreview").innerHTML =
+                            `<img src="${this.currentImageData}" alt="CIBIL Score Preview">`
+                    }
+                    reader.readAsDataURL(file)
+                }
+            }
+
+            viewImage(imageSrc, personName) {
+                const newWindow = window.open("", "_blank")
+                newWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>CIBIL Score - ${personName}</title>
+                            <style>
+                                body { 
+                                    margin: 0; 
+                                    display: flex; 
+                                    justify-content: center; 
+                                    align-items: center; 
+                                    min-height: 100vh; 
+                                    background: #f0f0f0; 
+                                    font-family: Arial, sans-serif;
+                                }
+                                img { 
+                                    max-width: 90%; 
+                                    max-height: 90%; 
+                                    object-fit: contain; 
+                                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                                }
+                                .header {
+                                    position: fixed;
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    background: rgba(0,0,0,0.8);
+                                    color: white;
+                                    padding: 1rem;
+                                    text-align: center;
+                                    z-index: 1000;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="header">
+                                <h3>CIBIL Score Document - ${personName}</h3>
+                                <p>Press ESC or close this window to return</p>
+                            </div>
+                            <img src="${imageSrc}" alt="CIBIL Score Document" />
+                            <script>
+                                document.addEventListener('keydown', function(e) {
+                                    if (e.key === 'Escape') {
+                                        window.close();
+                                    }
+                                });
+                            </script>
+                        </body>
+                    </html>
+                `)
+            }
+
+            // Data Import/Export
+            exportData() {
+                const exportData = {
+                    version: "1.0.0",
+                    exportDate: new Date().toISOString(),
+                    totalRecords: this.people.length,
+                    data: this.people,
+                }
+
+                const dataStr = JSON.stringify(exportData, null, 2)
+                const blob = new Blob([dataStr], { type: "application/json" })
+                const url = URL.createObjectURL(blob)
+
+                const a = document.createElement("a")
+                a.href = url
+                a.download = `saarthi_backup_${new Date().toISOString().split("T")[0]}.json`
+                document.body.appendChild(a)
+                a.click()
+                document.body.removeChild(a)
+                URL.revokeObjectURL(url)
+
+                this.updateStatus("Data exported successfully")
+            }
+
+            importData() {
+                const input = document.createElement("input")
+                input.type = "file"
+                input.accept = ".json"
+                input.onchange = (e) => {
+                    const file = e.target.files[0]
+                    if (file) {
+                        const reader = new FileReader()
+                        reader.onload = (e) => {
+                            this.importFromFile(e.target.result)
+                        }
+                        reader.readAsText(file)
+                    }
+                }
+                input.click()
+            }
+
+            importFromFile(fileContent) {
+                try {
+                    const importData = JSON.parse(fileContent)
+
+                    if (importData.data && Array.isArray(importData.data)) {
+                        if (confirm(`This will replace all current data with ${importData.data.length} imported records. Continue?`)) {
+                            this.people = importData.data
+                            this.saveData()
+                            this.renderCurrentTab()
+                            this.updateCounts()
+                            this.updateStatus(`Successfully imported ${importData.data.length} profiles`)
+                        }
+                    } else {
+                        throw new Error("Invalid file format")
+                    }
+                } catch (error) {
+                    alert("Error importing data: " + error.message)
+                    this.updateStatus("Import failed")
+                }
+            }
+
+            // UI Updates
+            updateCounts() {
+                const loanCount = this.people.filter((person) => {
+                    const riskFactors = this.calculateRiskFactors(person)
+                    return riskFactors.totalLoans > 0
+                }).length
+
+                const investmentCount = this.people.filter((person) => {
+                    return person.investmentStockMarket > 0 || person.investmentMutualFund > 0
+                }).length
+
+                const cibilCount = this.people.filter((person) => person.cibilScoreImage).length
+
+                document.getElementById("userCount").textContent = this.people.length
+                document.getElementById("directoryCount").textContent = this.people.length
+                document.getElementById("loansCount").textContent = loanCount
+                document.getElementById("investmentsCount").textContent = investmentCount
+                document.getElementById("cibilCount").textContent = cibilCount
+            }
+
+            updateStatus(message) {
+                document.getElementById("statusText").textContent = message
+                setTimeout(() => {
+                    document.getElementById("statusText").textContent = "Ready"
+                }, 3000)
+            }
+        }
+
+        // Initialize the application
+        const app = new SaarthiApp()
+
+        // Make app globally available for onclick handlers
+        window.app = app
+    </script>
+</body>
+</html>
