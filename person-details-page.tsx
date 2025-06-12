@@ -32,7 +32,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useToast } from "@/hooks/use-toast"
 import { RegisterServiceWorker } from "./app/register-sw"
 import { InstallPWA } from "./components/install-pwa"
-import { AppIcon } from "./app/icon"
+// import { AppIcon } from "./app/icon"
 import { AppStatus } from "./components/app-status"
 import { db, type Person } from "./lib/database"
 
@@ -1209,10 +1209,10 @@ export default function PersonDetailsPage() {
               </DialogContent>
             </Dialog>
 
-            <Button variant="outline" onClick={exportToCSV} disabled={people.length === 0}>
+            {/* <Button variant="outline" onClick={exportToCSV} disabled={people.length === 0}>
               <Download className="w-4 h-4 mr-2" />
               Export CSV
-            </Button>
+            </Button> */}
 
             <Button variant="outline" onClick={clearAllData} disabled={people.length === 0}>
               <Trash2 className="w-4 h-4 mr-2" />
