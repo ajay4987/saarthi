@@ -30,11 +30,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useToast } from "@/hooks/use-toast"
-import { RegisterServiceWorker } from "./app/register-sw"
-import { InstallPWA } from "./components/install-pwa"
+import { RegisterServiceWorker } from "./register-sw"
+import { InstallPWA } from "../components/install-pwa"
 // import { AppIcon } from "./app/icon"
-import { AppStatus } from "./components/app-status"
-import { db, type Person } from "./lib/database"
+import { AppStatus } from "../components/app-status"
+import { db, type Person } from "../lib/database"
 
 interface LoanData extends Person {
   totalLoans: number
